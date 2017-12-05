@@ -24,7 +24,24 @@ class SparkExecutionPlanTracker extends QueryExecutionListener {
 
   // Skeleton to track QueryExecution of Spark SQL/DF
 
-  override def onSuccess(funcName: String, qe: QueryExecution, durationNs: Long): Unit = { }
+    override def onSuccess(funcName: String, qe: QueryExecution, durationNs: Long): Unit = {
+      println(s"onSuccess: $funcName, $durationNs")
+      println(qe) 
+      // TODO: We should consider multiple inputs and multiple outs.
+      // TODO: We should handle OVERWRITE to remove the old lineage.
+      // TODO: We should consider LLAPRelation later
 
-  override def onFailure(funcName: String, qe: QueryExecution, exception: Exception): Unit = { }
+      // Case 1. LOAD DATA LOCAL INPATH (from local)
+      // Case 2. LOAD DATA INPATH (from HDFS)
+      // Case 3. INSERT INTO VALUES
+      // Case 4. INSERT INTO SELECT
+      // Case 5. FROM ... INSERT (OVERWRITE) INTO t2 INSERT INTO t3
+      // Case 6. CREATE TABLE AS SELECT
+      // Case 7. DF.saveAsTable
+    }
+
+    override def onFailure(funcName: String, qe: QueryExecution, exception: Exception): Unit = {
+      println(s"onFailure: $funcName, $exception")
+      println(qe)
+    }
 }
