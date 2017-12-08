@@ -17,6 +17,8 @@
 
 package com.hortonworks.spark.atlas.types
 
+import org.apache.spark.sql.execution.QueryExecution
+
 import scala.collection.JavaConverters._
 
 import org.apache.atlas.AtlasClient
@@ -144,4 +146,23 @@ object AtlasEntityUtils extends Logging {
     entity.setAttribute("outputs", outputs.asJava)
     entity
   }
+
+  def processToEntityForTmpTesting(qe: QueryExecution,
+                       inputs: List[AtlasEntity],
+                       outputs: List[AtlasEntity]): AtlasEntity = {
+    val entity = new AtlasEntity(metadata.PROCESS_TYPE_STRING)
+
+    println("processToEntityForTmpTesting:----")
+    println("details:" + qe.toString())
+    println("sparkPlanDescription:" + qe.sparkPlan.toString())
+    println("inputs:" + inputs.asJava)
+    println("outputs:" + outputs.asJava)
+
+    entity.setAttribute("details", qe.toString())
+    entity.setAttribute("sparkPlanDescription", qe.sparkPlan.toString())
+    entity.setAttribute("inputs", inputs.asJava)
+    entity.setAttribute("outputs", outputs.asJava)
+    entity
+  }
+
 }
